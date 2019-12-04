@@ -42,7 +42,6 @@ function createWindow () {
 
 function fullScreen () {
   win.maximize();
-  win.setMenu(null);
   win.closable = false;
   win.setFullScreen(true);
 }
