@@ -28,7 +28,7 @@ function createWindow () {
   // and load the index.html of the app.
   win.loadFile('index.html')
 
-  // Open the DevTools.
+  // devtools
   // win.webContents.openDevTools()
 
   // Emitted when the window is closed.
@@ -43,20 +43,18 @@ function createWindow () {
 function fullScreen () {
   win.maximize();
   win.closable = false;
+  //make window uncloseable
   win.setFullScreen(true);
 }
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-// app.on('ready', createWindow);
-
 app.on('ready', () => {
   createWindow();
   fullScreen();
   powerMonitor.on('on-battery', () => {
     console.log('the system is on battery mode')
-
   })
 })
 
@@ -66,6 +64,7 @@ app.on('ready', () => {
 app.on('window-all-closed', () => {
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
+  // This part not used since user can't close the window
   if (process.platform !== 'darwin') {
     app.quit()
   }
@@ -74,10 +73,7 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
-  // if (win === null) {
-  //   createWindow()
-  // }
+  if (win === null) {
+    createWindow()
+  }
 })
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
