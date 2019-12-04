@@ -1,24 +1,29 @@
-const { app, BrowserWindow } = require('electron')
-
+const { app, BrowserWindow, powerMonitor, screen } = require('electron')
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let win
 
 function createWindow () {
+
+  let size = screen.getPrimaryDisplay().size;
+  let width = size.width;
+  let height = size.height;
+
   // Create the browser window.
   win = new BrowserWindow({
-    width: 800,
-    height: 600,
-    frame: false,
-    autoHideMenuBar: true,
-    webPreferences: {
-      nodeIntegration: true
-    }
+    'width': width,
+    'height': height,
+    'max-width': width,
+    'max-height': height,
+    'frame': false,
+    'titleBarStyle': 'hidden',
+    'autoHideMenuBar': true,
+    'resizable':false,
+    'kiosk': true,
+    'show':true,
+    'simpleFullscreen':true,
+    'fullscreen':true
   })
 
-  win.maximize();
-  win.setMenu(null);
-  win.closable = false;
 
   // and load the index.html of the app.
   win.loadFile('index.html')
@@ -35,13 +40,28 @@ function createWindow () {
   })
 }
 
+function fullScreen () {
+  win.maximize();
+  win.setMenu(null);
+  win.closable = false;
+  win.setFullScreen(true);
+}
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow)
+// app.on('ready', createWindow);
 
+app.on('ready', () => {
+  createWindow();
+  fullScreen();
+  powerMonitor.on('on-battery', () => {
+    console.log('the system is on battery mode')
 
-app.dock.hide();
+  })
+})
+
+// app.dock.hide();
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
