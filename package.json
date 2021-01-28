@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/xrwang/scrymeariver#readme",
   "devDependencies": {
-    "electron": "^7.1.3"
+    "electron": "^9.4.0"
   },
   "dependencies": {
   }
